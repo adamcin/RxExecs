@@ -104,8 +104,8 @@ class TextStreamObserver: ObserverType {
     func on(_ event: Event<Data>) {
         switch event {
         case .next(let data):
-            let str = data.toString()
-            var combined = buffer + (str as String)
+            let str = String(data: data, encoding: String.Encoding.utf8) ?? ""
+            var combined = buffer + str
             buffer = ""
             let sendLast = combined.last.map(isNewline) ?? false
             var subs = [String]()

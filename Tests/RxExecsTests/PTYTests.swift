@@ -64,7 +64,7 @@ class PTYTests: XCTestCase {
         let _ = pipeOut.subscribe { (event) in
             switch event {
             case .next(let data):
-                print(data.toString(), separator: "", terminator: "")
+                print(String.init(data: data, encoding: String.Encoding.utf8) ?? "", separator: "", terminator: "")
             default: break
             }
         }
@@ -104,7 +104,7 @@ class PTYTests: XCTestCase {
         let _ = pipeOut.subscribe { (event) in
             switch event {
             case .next(let data):
-                print(data.toString(), separator: "", terminator: "")
+                print(String.init(data: data, encoding: String.Encoding.utf8) ?? "", separator: "", terminator: "")
             default: break
             }
         }

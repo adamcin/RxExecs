@@ -116,6 +116,7 @@ open class PTY: RxExecUnderlyingProcessType {
                 beginWritingToPipe(self._masterFileHandle!, stdout: stdout)
                 
                 if let stdin = self.standardInput {
+                    
                     beginReadingFromPipe(stdin, master: self._masterFileHandle!)
                 }
                 
@@ -154,7 +155,7 @@ open class PTY: RxExecUnderlyingProcessType {
     }
     
     fileprivate func waitForProcess() {
-        RxExecs.dispatch(self.qosClass) { [weak self] in
+        RxExecs.dispatch(DispatchQoS.QoSClass.background) { [weak self] in
             guard let this = self else { return }
             var	stat_loc = siginfo_t()
             let s = waitid(P_PID, UInt32(this.childProcessID), &stat_loc, WEXITED)
@@ -260,41 +261,3 @@ func RxExecPtyExec(_ path: String, args: [String], env: [String]) {
     }
 }
 
-extension Data {
-    
-    func toUInt8Array() -> [UInt8] {
-        return self.withUnsafeBytes({ (ptr: UnsafePointer<UInt8>) -> [UInt8] in
-            var bs = [] as [UInt8]
-            for _ in 0..<self.count {
-                bs.append(ptr.pointee)
-            }
-            return bs
-        })
-    }
-    
-    func toString() -> String {
-        return String(data: self, encoding: String.Encoding.utf8) ?? ""
-    }
-    
-    static func fromUInt8Array(_ bs: [UInt8]) -> Data {
-        var	r =	nil as Data?
-        bs.withUnsafeBufferPointer { (p: UnsafeBufferPointer<UInt8>) -> () in
-            if let address = p.baseAddress {
-                r = Data(bytes: address, count: p.count)
-            }
-        }
-        return	r!
-    }
-    
-    ///	Assumes `cCharacters` is C-string.
-    static func fromCCharArray(_ cCharacters:[CChar]) -> Data {
-        precondition(cCharacters.count == 0 || cCharacters[(cCharacters.endIndex - 1)] == 0)
-        var	r = nil as Data?
-        cCharacters.withUnsafeBufferPointer { (p: UnsafeBufferPointer<CChar>) -> () in
-            if let rawPtr = UnsafeRawPointer(p.baseAddress) {
-                r = Data.init(bytes: rawPtr, count: p.count)
-            }
-        }
-        return	r!
-    }
-}

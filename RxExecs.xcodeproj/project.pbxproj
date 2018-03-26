@@ -1172,7 +1172,7 @@
 			name = Products;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		OBJ_5 /*  */ = {
+		OBJ_5 = {
 			isa = PBXGroup;
 			children = (
 				OBJ_6 /* Package.swift */,
@@ -1181,7 +1181,6 @@
 				OBJ_25 /* Dependencies */,
 				OBJ_306 /* Products */,
 			);
-			name = "";
 			sourceTree = "<group>";
 		};
 		OBJ_7 /* Sources */ = {
@@ -1323,6 +1322,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = OBJ_509 /* Build configuration list for PBXNativeTarget "RxSwift" */;
 			buildPhases = (
+				AE677D4C20698225003EB7E4 /* ShellScript */,
 				OBJ_512 /* Sources */,
 				OBJ_662 /* Frameworks */,
 			);
@@ -1364,7 +1364,7 @@
 			knownRegions = (
 				en,
 			);
-			mainGroup = OBJ_5 /*  */;
+			mainGroup = OBJ_5;
 			productRefGroup = OBJ_306 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -1396,6 +1396,22 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		AE677D4C20698225003EB7E4 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "swift package resolve";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		OBJ_317 /* Sources */ = {

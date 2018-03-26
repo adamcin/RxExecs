@@ -72,7 +72,7 @@ class RxExecsTests: XCTestCase {
     }
     
     func testOutPty() {
-        let desc = RxExecDescriptor(path: pathForTestScript("hello_out"), args: nil, env: nil, cwd: "/tmp", qos: .userInitiated)
+        let desc = RxExecDescriptor(path: pathForTestScript("hello_out"), args: nil, env: [:], cwd: "/tmp", qos: .userInitiated)
         
         var message = ""
         let subject = PublishSubject<String>()
@@ -84,7 +84,8 @@ class RxExecsTests: XCTestCase {
                 if !line.isEmpty {
                     message = line
                 }
-            default: print("event: \(event)")
+            case .error(let error): print("error \(error)"); fallthrough
+            case .completed: print("completed")
             }
         }
         
@@ -302,7 +303,7 @@ class RxExecsTests: XCTestCase {
         }
         
         let process = try! RxExecs.launchPty(desc) { (process) -> () in
-            let _ = process.stdOut.map { $0.toString() }.subscribe(subject)
+            let _ = process.stdOut.map { String(data: $0, encoding: String.Encoding.utf8) ?? "" }.subscribe(subject)
         }
         
         process.waitUntilExit()
